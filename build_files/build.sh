@@ -2,23 +2,34 @@
 
 set -ouex pipefail
 
-### Install packages
+flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+systemctl disable flatpak-add-fedora-repos.service
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
+dnf5 -y copr enable bieszczaders/kernel-cachyos-lto
+dnf5 -y install kernel-cachyos-lto kernel-cachyos-lto-devel-matched
+dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
 
-# this installs a package from fedora repos
-dnf5 install -y tmux 
+dnf5 -y copr enable bieszczaders/kernel-cachyos-addons
+dnf5 -y swap zram-generator-defaults cachyos-settings
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+dnf5 -y install scx-manager
+# systemctl enable scx.service
 
-#### Example for enabling a System Unit File
+KERNEL_SUFFIX="cachyos-lto"
+QUALIFIED_KERNEL="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\d+)' | sed -E 's/kernel-(|'"$KERNEL_SUFFIX"'-)//')"
+/usr/bin/dracut -f -p --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible -v --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
+chmod 0600 "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 
-systemctl enable podman.socket
+# touch /etc/default/scx
+# echo scx_lavd > /etc/default/scx
+
+dnf5 -y install git stow foot zsh neovim distrobox
+
+dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
+dnf5 -y copr disable bieszczaders/kernel-cachyos-addons
+
+systemctl disable --now NetworkManager-wait-online.service
+systemctl disable --now ModemManager.service
+sed -i 's/GRUB_TIMEOUT.*/GRUB_TIMEOUT=2/' /etc/default/grub
+sed -i 's/#DefaultTimeoutStopSec.*/DefaultTimeoutStopSec=15s/' /etc/systemd/user.conf
+sed -i 's/#DefaultTimeoutStopSec.*/DefaultTimeoutStopSec=15s/' /etc/systemd/system.conf
