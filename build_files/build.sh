@@ -25,9 +25,9 @@ dnf5 -y install scx-manager zoxide git stow foot zsh neovim distrobox #kernel-ca
 #dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
 
 # gtrash
-curl -L "https://github.com/umlx5h/gtrash/releases/latest/download/gtrash_$(uname -s)_$(uname -m).tar.gz" | tar xz
-chmod a+x ./gtrash
-sudo mv ./gtrash /usr/local/bin/gtrash
+# curl -L "https://github.com/umlx5h/gtrash/releases/latest/download/gtrash_$(uname -s)_$(uname -m).tar.gz" | tar xz
+# chmod a+x ./gtrash
+# sudo mv ./gtrash /usr/local/bin/gtrash
 
 # generate initramfs for the new kernel
 # KERNEL_SUFFIX="cachyos-lto"
