@@ -19,7 +19,7 @@ dnf5 -y copr enable bieszczaders/kernel-cachyos-addons
 dnf5 -y swap zram-generator-defaults cachyos-settings
 
 # install all packages in a batch
-dnf5 -y install scx-manager zoxide eza git stow foot zsh neovim distrobox kernel-cachyos-lto kernel-cachyos-lto-devel-matched
+dnf5 -y install scx-manager zoxide git stow foot zsh neovim distrobox kernel-cachyos-lto kernel-cachyos-lto-devel-matched
 dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
 
 # gtrash
