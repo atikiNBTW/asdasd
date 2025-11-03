@@ -2,13 +2,55 @@
 
 set -ouex pipefail
 
-# add flathub
-flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-systemctl disable flatpak-add-fedora-repos.service
+PACKAGES=()
+
+add_pkg() {
+  for p in "$@"; do
+    PACKAGES+=("$p")
+  done
+}
+add_pkgs() { add_pkg "$@"; }
 
 # tweak things
 systemctl disable NetworkManager-wait-online.service
 systemctl disable ModemManager.service
+
+# Optimize DNF package manager for faster downloads and efficient updates
+echo "max_parallel_downloads=10" | tee -a /etc/dnf/dnf.conf > /dev/null
+add_pkg dnf-plugins-core
+
+# Replace Fedora Flatpak Repo with Flathub for better package management and apps stability
+flatpak remote-delete fedora --force || true
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak repair
+
+# Enable RPM Fusion repositories to access additional software packages and codecs
+dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+# Install multimedia codecs to enhance multimedia capabilities
+dnf swap ffmpeg-free ffmpeg --allowerasing -y
+dnf update @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y
+dnf update @sound-and-video -y
+add_pkg intel-media-driver
+
+# Install Hardware Accelerated Codecs for AMD GPUs. This improves video playback and encoding performance on systems with AMD graphics.
+dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
+dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
+dnf swap mesa-va-drivers.i686 mesa-va-drivers-freeworld.i686
+dnf swap mesa-vdpau-drivers.i686 mesa-vdpau-drivers-freeworld.i686
+add_pkgs ffmpeg-libs libva libva-utils
+add_pkgs openh264 gstreamer1-plugin-openh264 mozilla-openh264
+dnf config-manager setopt fedora-cisco-openh264.enabled=1
+add_pkg rpmfusion-free-release-tainted
+add_pkgs libdvdcss libavcodec-freeworld heif-pixbuf-loader libheif-freeworld libheif-tools
+
+# Install virtualization tools to enable virtual machines and containerization
+add_pkg "@virtualization"
+
+#bluetooth
+add_pkg pipewire-codec-aptx
+
 # sed -i 's/GRUB_TIMEOUT.*/GRUB_TIMEOUT=2/' /etc/default/grub
 # sed -i 's/#DefaultTimeoutStopSec.*/DefaultTimeoutStopSec=15s/' /etc/systemd/user.conf
 # sed -i 's/#DefaultTimeoutStopSec.*/DefaultTimeoutStopSec=15s/' /etc/systemd/system.conf
@@ -21,7 +63,7 @@ dnf5 -y swap zram-generator-defaults cachyos-settings
 export DRACUT_NO_XATTR=1
 
 # install all packages in a batch
-dnf5 -y install scx-manager zoxide git stow foot zsh neovim distrobox btop lsd #kernel-cachyos-lto kernel-cachyos-lto-devel-matched
+add_pkgs scx-manager zoxide git stow foot zsh neovim distrobox btop lsd #kernel-cachyos-lto kernel-cachyos-lto-devel-matched
 # dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
 
 # gtrash
@@ -42,3 +84,5 @@ sudo mv ./eza /usr/bin/eza
 
 dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
 dnf5 -y copr disable bieszczaders/kernel-cachyos-addons
+
+dnf -y install "${PACKAGES[@]}"
