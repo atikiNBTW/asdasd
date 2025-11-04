@@ -30,9 +30,9 @@ dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-
 # Install multimedia codecs to enhance multimedia capabilities
 dnf swap ffmpeg-free ffmpeg --allowerasing -y
 
-dnf install -y @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y --allowerasing
-dnf remove gstreamer1-plugins-bad-free gstreamer1-plugins-bad-free-libs gstreamer1-plugin-openh264 gstreamer1-plugins-ugly-free -y
-dnf update -y --allowerasing @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+# dnf install -y @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y --allowerasing
+# dnf remove gstreamer1-plugins-bad-free gstreamer1-plugins-bad-free-libs gstreamer1-plugin-openh264 gstreamer1-plugins-ugly-free -y
+# dnf update -y --allowerasing @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
 
 dnf install @sound-and-video -y --allowerasing
 dnf update @sound-and-video -y --allowerasing
