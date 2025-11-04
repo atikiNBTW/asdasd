@@ -17,7 +17,7 @@ systemctl disable ModemManager.service
 
 # Optimize DNF package manager for faster downloads and efficient updates
 echo "max_parallel_downloads=10" | tee -a /etc/dnf/dnf.conf > /dev/null
-add_pkg dnf-plugins-core
+dnf5 install -y dnf-plugins-core
 
 # Replace Fedora Flatpak Repo with Flathub for better package management and apps stability
 flatpak remote-delete fedora --force || true
@@ -25,7 +25,7 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 flatpak repair
 
 # Enable RPM Fusion repositories to access additional software packages and codecs
-sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 # Install multimedia codecs to enhance multimedia capabilities
 dnf swap ffmpeg-free ffmpeg --allowerasing -y
