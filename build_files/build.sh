@@ -25,8 +25,7 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 flatpak repair
 
 # Enable RPM Fusion repositories to access additional software packages and codecs
-dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 # Install multimedia codecs to enhance multimedia capabilities
 dnf swap ffmpeg-free ffmpeg --allowerasing -y
@@ -62,7 +61,6 @@ dnf5 -y swap zram-generator-defaults cachyos-settings
 
 export DRACUT_NO_XATTR=1
 
-# install all packages in a batch
 add_pkgs scx-manager zoxide git stow foot zsh neovim distrobox btop lsd #kernel-cachyos-lto kernel-cachyos-lto-devel-matched
 # dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
 
@@ -82,7 +80,7 @@ sudo mv ./eza /usr/bin/eza
 # /usr/bin/dracut -f -p --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible -v --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 # chmod 0600 "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 
+dnf -y install "${PACKAGES[@]}"
+
 dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
 dnf5 -y copr disable bieszczaders/kernel-cachyos-addons
-
-dnf -y install "${PACKAGES[@]}"
