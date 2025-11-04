@@ -25,19 +25,24 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 flatpak repair
 
 # Enable RPM Fusion repositories to access additional software packages and codecs
-sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 # Install multimedia codecs to enhance multimedia capabilities
 dnf swap ffmpeg-free ffmpeg --allowerasing -y
-dnf update @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y
-dnf update @sound-and-video -y
+
+dnf install -y @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y --allowerasing
+dnf remove gstreamer1-plugins-bad-free gstreamer1-plugins-bad-free-libs gstreamer1-plugin-openh264 gstreamer1-plugins-ugly-free -y
+dnf update -y --allowerasing @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+
+dnf install @sound-and-video -y --allowerasing
+dnf update @sound-and-video -y --allowerasing
 add_pkg intel-media-driver
 
 # Install Hardware Accelerated Codecs for AMD GPUs. This improves video playback and encoding performance on systems with AMD graphics.
 dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
 dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
-dnf swap mesa-va-drivers.i686 mesa-va-drivers-freeworld.i686
-dnf swap mesa-vdpau-drivers.i686 mesa-vdpau-drivers-freeworld.i686
+dnf swap mesa-va-drivers.i686 mesa-va-drivers-freeworld.i686 -y
+dnf swap mesa-vdpau-drivers.i686 mesa-vdpau-drivers-freeworld.i686 -y
 add_pkgs ffmpeg-libs libva libva-utils
 add_pkgs openh264 gstreamer1-plugin-openh264 mozilla-openh264
 dnf config-manager setopt fedora-cisco-openh264.enabled=1
