@@ -59,15 +59,24 @@ add_pkg pipewire-codec-aptx
 # sed -i 's/#DefaultTimeoutStopSec.*/DefaultTimeoutStopSec=15s/' /etc/systemd/user.conf
 # sed -i 's/#DefaultTimeoutStopSec.*/DefaultTimeoutStopSec=15s/' /etc/systemd/system.conf
 
+export DRACUT_NO_XATTR=1
+
 # coprs
 dnf5 -y copr enable bieszczaders/kernel-cachyos-lto
 dnf5 -y copr enable bieszczaders/kernel-cachyos-addons
 dnf5 -y swap zram-generator-defaults cachyos-settings
 
-export DRACUT_NO_XATTR=1
+add_pkgs scx-manager zoxide git stow foot zsh neovim distrobox btop lsd vnstat fd
 
-add_pkgs scx-manager zoxide git stow foot zsh neovim distrobox btop lsd #kernel-cachyos-lto kernel-cachyos-lto-devel-matched
-# dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
+## cachyos kernel
+
+# workaround for dracut not working
+touch /run/ostree-booted
+
+dnf install -y kernel-cachyos-lto kernel-cachyos-lto-devel-matched
+dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
+
+rm /run/ostree-booted
 
 # gtrash
 curl -L "https://github.com/umlx5h/gtrash/releases/latest/download/gtrash_$(uname -s)_$(uname -m).tar.gz" | tar xz
@@ -80,10 +89,10 @@ chmod a+x ./eza
 sudo mv ./eza /usr/bin/eza
 
 # generate initramfs for the new kernel
-# KERNEL_SUFFIX="cachyos-lto"
-# QUALIFIED_KERNEL="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\d+)' | sed -E 's/kernel-(|'"$KERNEL_SUFFIX"'-)//')"
-# /usr/bin/dracut -f -p --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible -v --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
-# chmod 0600 "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
+KERNEL_SUFFIX="cachyos-lto"
+QUALIFIED_KERNEL="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\d+)' | sed -E 's/kernel-(|'"$KERNEL_SUFFIX"'-)//')"
+/usr/bin/dracut -f -p --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible -v --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
+chmod 0600 "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 
 dnf -y install "${PACKAGES[@]}"
 
