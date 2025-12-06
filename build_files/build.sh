@@ -40,7 +40,7 @@ add_pkg ffmpeg
 
 dnf install -y @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -x gstreamer1-plugins-bad-freeworld -x pipewire-codec-aptx -y --allowerasing
 
-app_pkg "@sound-and-video"
+add_pkg "@sound-and-video"
 add_pkg intel-media-driver
 
 # Install Hardware Accelerated Codecs for AMD GPUs. This improves video playback and encoding performance on systems with AMD graphics.
