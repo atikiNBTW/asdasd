@@ -66,7 +66,9 @@ dnf5 -y copr enable bieszczaders/kernel-cachyos-lto
 dnf5 -y copr enable bieszczaders/kernel-cachyos-addons
 dnf5 -y swap zram-generator-defaults cachyos-settings
 
-add_pkgs scx-manager zoxide git stow foot zsh neovim distrobox btop lsd vnstat fd wl-clipboard-rs
+add_pkgs scx-manager zoxide git stow foot zsh neovim distrobox btop lsd vnstat fd
+# rawhide master wl-clipboard to fix focus stealing in kde
+add_pkg "https://kojipkgs.fedoraproject.org//packages/wl-clipboard/2.2.1%5Egit20251124.e808203/1.fc44/x86_64/wl-clipboard-2.2.1%5Egit20251124.e808203-1.fc44.x86_64.rpm"
 
 ## cachyos kernel
 
