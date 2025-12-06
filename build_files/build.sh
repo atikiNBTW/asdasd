@@ -96,7 +96,7 @@ QUALIFIED_KERNEL="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\
 /usr/bin/dracut -f -p --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible -v --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 chmod 0600 "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 
-dnf -y install "${PACKAGES[@]}" -x pipewire-codec-aptx --allowerasing
+dnf -y install "${PACKAGES[@]}" -x pipewire-codec-aptx --allowerasing --skip-unavailable
 dnf -y remove "${TO_REMOVE[@]}"
 dnf update --allowerasing
 
