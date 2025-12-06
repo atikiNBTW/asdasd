@@ -98,7 +98,7 @@ chmod 0600 "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 
 dnf -y install "${PACKAGES[@]}" -x pipewire-codec-aptx --allowerasing --skip-unavailable
 dnf -y remove "${TO_REMOVE[@]}"
-dnf update --allowerasing
+dnf -y update --allowerasing
 
 dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
 dnf5 -y copr disable bieszczaders/kernel-cachyos-addons
