@@ -38,7 +38,7 @@ dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-
 add_remove ffmpeg-free
 add_pkg ffmpeg
 
-dnf install -y @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -x gstreamer1-plugins-bad-freeworld -y --allowerasing
+dnf install -y @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -x gstreamer1-plugins-bad-freeworld -x pipewire-codec-aptx -y --allowerasing
 
 app_pkg "@sound-and-video"
 add_pkg intel-media-driver
@@ -94,7 +94,7 @@ QUALIFIED_KERNEL="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\
 /usr/bin/dracut -f -p --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible -v --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 chmod 0600 "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
 
-dnf -y install "${PACKAGES[@]}" -x pipewire-libs-extra --allowerasing
+dnf -y install "${PACKAGES[@]}" -x pipewire-codec-aptx --allowerasing
 dnf -y remove "${TO_REMOVE[@]}"
 dnf update --allowerasing
 
