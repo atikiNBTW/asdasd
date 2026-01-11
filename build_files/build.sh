@@ -55,12 +55,6 @@ add_pkgs libdvdcss libavcodec-freeworld heif-pixbuf-loader libheif-freeworld lib
 # Install virtualization tools to enable virtual machines and containerization
 add_pkg "@virtualization"
 
-# sed -i 's/GRUB_TIMEOUT.*/GRUB_TIMEOUT=2/' /etc/default/grub
-# sed -i 's/#DefaultTimeoutStopSec.*/DefaultTimeoutStopSec=15s/' /etc/systemd/user.conf
-# sed -i 's/#DefaultTimeoutStopSec.*/DefaultTimeoutStopSec=15s/' /etc/systemd/system.conf
-
-export DRACUT_NO_XATTR=1
-
 # coprs
 dnf5 -y copr enable bieszczaders/kernel-cachyos-lto
 dnf5 -y copr enable bieszczaders/kernel-cachyos-addons
