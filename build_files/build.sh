@@ -18,6 +18,8 @@ add_pkg() {
 add_pkgs() { add_pkg "$@"; }
 add_removes() { add_remove "$@"; }
 
+add_pkgs gvisor-tap-vsock
+
 # tweak things
 systemctl disable NetworkManager-wait-online.service
 systemctl disable ModemManager.service
