@@ -36,6 +36,9 @@ flatpak repair
 # Enable RPM Fusion repositories to access additional software packages and codecs
 dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
+sudo dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo
+add_pkg tailscale
+
 # Install multimedia codecs to enhance multimedia capabilities
 add_remove ffmpeg-free
 add_pkg ffmpeg
@@ -98,3 +101,8 @@ dnf -y update --allowerasing -x vlc-plugins-base
 
 dnf5 -y copr disable bieszczaders/kernel-cachyos-lto
 dnf5 -y copr disable bieszczaders/kernel-cachyos-addons
+
+rm -f /etc/yum.repos.d/negativo17-fedora-multimedia.repo
+rm -f /etc/yum.repos.d/_copr_ublue-os-akmods.repo
+rm -f /etc/yum.repos.d/tailscale.repo
+
