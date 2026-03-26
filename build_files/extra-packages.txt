@@ -18,3 +18,4 @@ fd
 docker-compose
 https://kojipkgs.fedoraproject.org//packages/wl-clipboard/2.3.0/1.fc45/x86_64/wl-clipboard-2.3.0-1.fc45.x86_64.rpm
 xxd
+adb
