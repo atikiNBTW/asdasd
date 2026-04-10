@@ -20,3 +20,4 @@ https://kojipkgs.fedoraproject.org//packages/wl-clipboard/2.3.0/1.fc45/x86_64/wl
 xxd
 adb
 libayatana-appindicator-gtk3
+xray
