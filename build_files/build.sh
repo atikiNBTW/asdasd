@@ -59,6 +59,7 @@ add_pkg ffmpeg
 add_pkg "@multimedia"
 add_pkg "@sound-and-video"
 add_pkg intel-media-driver
+add_remove gstreamer1-plugins-bad
 
 add_removes mesa-va-drivers mesa-vdpau-drivers mesa-va-drivers.i686 mesa-vdpau-drivers.i686
 add_pkgs mesa-va-drivers-freeworld mesa-vdpau-drivers-freeworld mesa-va-drivers-freeworld.i686 mesa-vdpau-drivers-freeworld.i686
