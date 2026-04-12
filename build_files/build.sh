@@ -59,7 +59,6 @@ add_pkg ffmpeg
 add_pkg "@multimedia"
 add_pkg "@sound-and-video"
 add_pkg intel-media-driver
-add_remove gstreamer1-plugins-bad
 
 add_removes mesa-va-drivers mesa-vdpau-drivers mesa-va-drivers.i686 mesa-vdpau-drivers.i686
 add_pkgs mesa-va-drivers-freeworld mesa-vdpau-drivers-freeworld mesa-va-drivers-freeworld.i686 mesa-vdpau-drivers-freeworld.i686
@@ -95,7 +94,7 @@ rm -f ./eza
 
 # --- apply package changes ---
 if ((${#PACKAGES[@]} > 0)); then
-  dnf -y install "${PACKAGES[@]}" -x pipewire-codec-aptx --allowerasing --skip-unavailable
+  dnf -y install "${PACKAGES[@]}" -x pipewire-codec-aptx,gstreamer1-plugins-bad --allowerasing --skip-unavailable
 fi
 
 if ((${#TO_REMOVE[@]} > 0)); then
