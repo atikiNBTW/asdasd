@@ -94,7 +94,7 @@ rm -f ./eza
 
 # --- apply package changes ---
 if ((${#PACKAGES[@]} > 0)); then
-  dnf -y install "${PACKAGES[@]}" -x pipewire-codec-aptx,gstreamer1-plugins-bad --allowerasing --skip-unavailable
+  dnf -y install "${PACKAGES[@]}" -x pipewire-codec-aptx,gstreamer1-plugins-bad,gstreamer1-plugins-bad-freeworld --allowerasing --skip-unavailable
 fi
 
 if ((${#TO_REMOVE[@]} > 0)); then
