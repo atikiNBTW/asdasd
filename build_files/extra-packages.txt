@@ -21,3 +21,4 @@ xxd
 adb
 libayatana-appindicator-gtk3
 xray
+helium-bin

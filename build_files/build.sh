@@ -51,6 +51,9 @@ dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
 dnf5 -y copr enable bieszczaders/kernel-cachyos-lto
 dnf5 -y copr enable bieszczaders/kernel-cachyos-addons
+dnf5 -y copr enable imput/helium
+dnf5 -y copr enable vgaetera/extras
+dnf5 -y copr enable zeno/scrcpy
 dnf5 -y swap zram-generator-defaults cachyos-settings
 
 # --- package groups ---
